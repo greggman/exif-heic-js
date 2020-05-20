@@ -12,9 +12,7 @@
         <div>
             <input type="file" id="photo" name="photo" acc accept=".heic" />
         </div>
-        <div>
-            <span id="gps-coordinates"></span>
-        </div>
+        <pre id="tags"></pre>
         <script src="exif-heic.js"></script>
         <script>
             document.getElementById("photo").onchange = function (e)
@@ -26,15 +24,8 @@
                     reader.onload = function ()
                     {
                         var tags = findEXIFinHEIC(reader.result);
-
-                        var latitudeComponents = tags["GPSLatitude"];
-                        var latitudeRef = tags["GPSLatitudeRef"];
-                        var longitudeComponents = tags["GPSLongitude"];
-                        var longitudeRef = tags["GPSLongitudeRef"];
-
-                        document.getElementById("gps-coordinates").innerHTML = "The picture was taken at " + latitudeComponents + " " + latitudeRef + ", " + longitudeComponents + " " + longitudeRef + ".";
+                        document.getElementById("tags").textContent = JSON.stringify(tags, null, 2);
                     };
-
                     reader.readAsArrayBuffer(e.target.files[0]);
                 }
             }
